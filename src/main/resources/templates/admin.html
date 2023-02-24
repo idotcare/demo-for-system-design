@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>在线考试系统|教学班学生添加界面</title>
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link th:href="@{/css/dashboard.css}" rel="stylesheet">
+    <style type="text/css">
+        /* Chart.js */
+
+        @-webkit-keyframes chartjs-render-animation {
+            from {
+                opacity: 0.99
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        @keyframes chartjs-render-animation {
+            from {
+                opacity: 0.99
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        .chartjs-render-monitor {
+            -webkit-animation: chartjs-render-animation 0.001s;
+            animation: chartjs-render-animation 0.001s;
+        }
+    </style>
+
+    <style type="text/css">
+
+        #container{
+            overflow:hidden;
+        }
+        #box1{
+            float: left;
+            padding: 10px;
+        }
+        #box2{
+            float: left;
+            padding: 10px;
+        }
+
+        #pmsg{
+            padding: 10px;
+        }
+
+
+    </style>
+
+
+</head>
+
+<body>
+<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="javascript:void(0);">欢迎[[${session.loginUser}]]管理员</a>
+    <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+            <a class="nav-link" th:href="@{/}">退出登录</a>
+        </li>
+    </ul>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            <div class="sidebar-sticky">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/updateAdinfo(id=${session.userid})}" >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                            修改个人信息
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/selectTeacher(id=${session.userid})}" >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                            维护教师信息
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/selectStudent(id=${session.userid})}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                            维护学生信息
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/selectSubject(id=${session.userid})}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-layers">
+                                <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                                <polyline points="2 17 12 22 22 17"></polyline>
+                                <polyline points="2 12 12 17 22 12"></polyline>
+                            </svg>
+                            管理课程信息
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/selectTeach}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file">
+                                <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                                <polyline points="13 2 13 9 20 9"></polyline>
+                            </svg>
+                            管理教学信息
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/selectStudy}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file">
+                                <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                                <polyline points="13 2 13 9 20 9"></polyline>
+                            </svg>
+                            管理学习信息
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;">
+                <div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
+                    <div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div>
+                </div>
+                <div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
+                    <div style="position:absolute;width:200%;height:200%;left:0; top:0"></div>
+                </div>
+            </div>
+
+            <div class="row clearfix" th:if="${#strings.equals(displace,'updateInfo')}">
+                <div class="col-md-12 column">
+                    <form th:action="@{/updateAd}">
+                        <p>姓名:<b th:text="${adinfo.getAdminname()}"></b></p>
+                        <input th:value="${adinfo.getAdminid()}" readonly="readonly" type="hidden" name="id">
+                        <p>密码:<input type="text" th:value="${adinfo.getAdminpassword()}" name="pwd" autocomplete="off"></p>
+                        <p>手机:<input type="text" th:value="${adinfo.getAdminphone()}" name="phone" autocomplete="off"></p>
+                        <button class="btn-success" type="submit" >提交</button>
+                        <button class="btn-danger" type="reset" >清空</button>
+                    </form>
+                </div>
+            </div>
+
+
+            <div class="row clearfix" th:if="${#strings.equals(displace,'teacher')}">
+                <div class="col-md-12 column">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                        <tr>
+                            <th>教师工号</th>
+                            <th>教师名称</th>
+                            <th>教师性别</th>
+                            <th>联系方式</th>
+                            <th>学科</th>
+                            <th>部门</th>
+                            <th>密码</th>
+                            <!--<th hidden>管理员工号</th>-->
+                            <th><a class="btn btn-success" th:href="@{/toAddTeacherPages(aid=${session.userid})}" >增加</a>/修改/删除</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="teacher:${ts}">
+                                <td th:text="${teacher.getTeacherid}"></td>
+                                <td th:text="${teacher.getTeachername()}"></td>
+                                <td th:text="${teacher.getTeachersex()}"></td>
+                                <td th:text="${teacher.getTeacherphone()}"></td>
+                                <td th:text="${teacher.getTeachermajor()}"></td>
+                                <td th:text="${teacher.getTeacherdepart()}"></td>
+                                <td th:text="${teacher.getTeacherpassword()}"></td>
+                                <!--<td th:text="${teacher.getAdminid()}" hidden></td>-->
+                                <td>
+                                    <a class="btn btn-success" th:href="@{/toAddTeacherPages(aid=${session.userid})}" >增加</a>
+                                    <a class="btn btn-warning" th:href="@{/toupdateTeacherPages(tid=${teacher.getTeacherid()},aid=${session.userid})}" >修改</a>
+                                    <a class="btn btn-danger" th:href="@{/deleteTeacher(tid=${teacher.getTeacherid()},aid=${session.userid})}">删除</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+            <div class="row clearfix" th:if="${#strings.equals(displace,'student')}">
+                <div class="col-md-12 column">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                        <tr>
+                            <th>学生学号</th>
+                            <th>学生名称</th>
+                            <th>学生性别</th>
+                            <th>身份证号</th>
+                            <th>年级</th>
+                            <th>密码</th>
+                            <!--<th hidden>管理员工号</th>-->
+                            <th><a class="btn btn-success" th:href="@{/toAddStudentPages(aid=${session.userid})}">增加</a>/删除/修改</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="student:${ss}">
+                                <td th:text="${student.getStudentid()}"></td>
+                                <td th:text="${student.getStudentname()}"></td>
+                                <td th:text="${student.getStudentsex()}"></td>
+                                <td th:text="${student.getStudentidnum()}"></td>
+                                <td th:text="${student.getStudentgrade()}"></td>
+                                <td th:text="${student.getStudentpassword()}"></td>
+                                <!--<td th:text="${student.getAdminid()}" hidden></td>-->
+                                <td>
+                                    <a class="btn btn-success" th:href="@{/toAddStudentPages(aid=${session.userid})}">增加</a>
+                                    <a class="btn btn-warning" th:href="@{/toupdateStudentPages(sid=${student.getStudentid()},aid=${session.userid})}">修改</a>
+                                    <a class="btn btn-danger" th:href="@{/deleteStudent(sid=${student.getStudentid()},aid=${session.userid})}">删除</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+            <div class="row clearfix" th:if="${#strings.equals(displace,'subject')}">
+                <div class="col-md-12 column">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                        <tr>
+                            <th>课程编号</th>
+                            <th>课程名称</th>
+                            <!--<th hidden>管理员工号</th>-->
+                            <th><a class="btn btn-success" th:href="@{/toAddSubjectPages(aid=${session.userid})}">增加</a>/删除/修改</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="subject:${subjects}">
+                            <td th:text="${subject.getSubjectid()}"></td>
+                            <td th:text="${subject.getSubjectname()}"></td>
+                            <!--<td th:text="${subject.getAdminid()}" hidden></td>-->
+                            <td>
+                                <a class="btn btn-success" th:href="@{/toAddSubjectPages(aid=${session.userid})}">增加</a>
+                                <a class="btn btn-warning" th:href="@{/toupdateSubjectPages(subid=${subject.getSubjectid()},aid=${session.userid})}">修改</a>
+                                <a class="btn btn-danger" th:href="@{/deleteSubject(subid=${subject.getSubjectid()},aid=${session.userid})}">删除</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+            <div class="row clearfix" th:if="${#strings.equals(displace,'study')}">
+                <div class="col-md-12 column">
+
+                    <a class="btn btn-info" th:href="@{/selectSubjectForTeacherStudents(aid=${session.userid})}">查看课程下教学班的学生</a>
+                    <a class="btn btn-info" th:href="@{/selectStudentForClass(aid=${session.userid})}">查看学生的所有的教学班</a>
+
+                    <div class="row clearfix" th:if="${#strings.equals(displaceteach,'student')}">
+                        <div class="col-md-12 column">
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                <tr>
+                                    <th>学生学号</th>
+                                    <th>学生名称</th>
+                                    <th>年级</th>
+                                    <th>查看学生加入的教学班</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="student:${students}">
+                                    <td th:text="${student.getStudentid()}"></td>
+                                    <td th:text="${student.getStudentname()}"></td>
+                                    <td th:text="${student.getStudentgrade()}"></td>
+                                    <td>
+                                        <a class="btn btn-success" th:href="@{/selectTheStudentsClasses(aid=${student.getAdminid()},sid=${student.getStudentid()})}">查看此学生加入的教学班</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="row clearfix" th:if="${#strings.equals(displaceteach,'studyclass')}">
+                        <div class="col-md-12 column">
+                            <p>学号：<b th:text="${student.getStudentid()}"></b></p>
+                            <p>姓名：<b th:text="${student.getStudentname()}"></b></p>
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                <tr>
+                                    <th>课程名称</th>
+                                    <th>教师名称</th>
+                                    <th><a class="btn btn-success" th:href="@{/joinNewStudyClass(aid=${student.getAdminid()},sid=${student.getStudentid()})}">加入新的教学班</a>/退出教学班</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="studyClass:${studyClasses}">
+                                    <td th:text="${studyClass.getSubject().getSubjectname()}"></td>
+                                    <td th:text="${studyClass.getTeacher().getTeachername()}"></td>
+                                    <td>
+                                        <a class="btn btn-success" th:href="@{/joinNewStudyClass(aid=${student.getAdminid()},sid=${student.getStudentid()})}">加入新的教学班</a>
+                                        <a class="btn btn-danger" th:href="@{/quitTheStudyClass(aid=${student.getAdminid()},sid=${student.getStudentid()},tid=${studyClass.getTeacher().getTeacherid()},subid=${studyClass.getSubject().getSubjectid()})}">退出此教学班</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="row clearfix" th:if="${#strings.equals(displaceteach,'studySubject')}">
+                        <div class="col-md-12 column">
+                            <p>学号：<b th:text="${student.getStudentid()}"></b></p>
+                            <p>姓名：<b th:text="${student.getStudentname()}"></b></p>
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                <tr>
+                                    <th>课程编号</th>
+                                    <th>课程名称</th>
+                                    <th>选择课程查看教学班</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="subject:${subjects}">
+                                    <td th:text="${subject.getSubjectid()}"></td>
+                                    <td th:text="${subject.getSubjectname()}"></td>
+                                    <td>
+                                        <a class="btn btn-success" th:href="@{/selectStudyTeacher(aid=${student.getAdminid()},sid=${student.getStudentid()},subid=${subject.getSubjectid()})}">查看此课程下的教学班</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+                    <div class="row clearfix" th:if="${#strings.equals(displaceteach,'subject')}">
+                        <div class="col-md-12 column">
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                <tr>
+                                    <th>课程编号</th>
+                                    <th>课程名称</th>
+                                    <th>查看教学班</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="subject:${subjects}">
+                                    <td th:text="${subject.getSubjectid()}"></td>
+                                    <td th:text="${subject.getSubjectname()}"></td>
+                                    <td>
+                                        <a class="btn btn-success" th:href="@{/selectSubjectTeacherBySubjectId(subid=${subject.getSubjectid()},aid=${subject.getAdminid()})}">查看课程下的教学班</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+
+                    <div class="row clearfix" th:if="${#strings.equals(displaceteach,'studyTeacher')}">
+                        <div class="col-md-12 column">
+                            <p>学号：<b th:text="${student.getStudentid()}"></b></p>
+                            <p>姓名：<b th:text="${student.getStudentname()}"></b></p>
+                            <p>课程名：<b th:text="${subject.getSubjectname()}"></b></p>
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                <tr>
+                                    <th>教师工号</th>
+                                    <th>教师姓名</th>
+                                    <th>学科</th>
+                                    <th>部门</th>
+                                    <th>加入教学班</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="teacher:${teachers}">
+                                    <td th:text="${teacher.getTeacherid()}"></td>
+                                    <td th:text="${teacher.getTeachername()}"></td>
+                                    <td th:text="${teacher.getTeachermajor()}"></td>
+                                    <td th:text="${teacher.getTeacherdepart()}"></td>
+                                    <td>
+                                        <a class="btn btn-success" th:href="@{/joinThisNewStudyClass(aid=${student.getAdminid()},tid=${teacher.getTeacherid()},subid=${subject.getSubjectid()},sid=${student.getStudentid()})}">加入此教学班</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+
+                    <div class="row clearfix" th:if="${#strings.equals(displaceteach,'teacher')}">
+                        <div class="col-md-12 column">
+                            <p th:text="${subject.getSubjectname()}" ></p>
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                <tr>
+                                    <th>教师工号</th>
+                                    <th>教师姓名</th>
+                                    <th>学科</th>
+                                    <th>部门</th>
+                                    <th>学生管理</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="teacher:${teachers}">
+                                    <td th:text="${teacher.getTeacherid()}"></td>
+                                    <td th:text="${teacher.getTeachername()}"></td>
+                                    <td th:text="${teacher.getTeachermajor()}"></td>
+                                    <td th:text="${teacher.getTeacherdepart()}"></td>
+                                    <td>
+                                        <a class="btn btn-success" th:href="@{/selectSubjectTeacherStudents(aid=${session.userid},subid=${subject.getSubjectid()},tid=${teacher.getTeacherid()})}" target="_blank">查看班级学生</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+
+                    <p th:if="${not #strings.isEmpty(subjectMsg)}" th:text="${subjectMsg}" id="pmsg"></p>
+
+                </div>
+            </div>
+
+            <div class="row clearfix" th:if="${#strings.equals(displace,'teach')}">
+                <div class="col-md-12 column">
+                    <a class="btn btn-info" th:href="@{/selectSubjectForTeachers(id=${session.userid})}">查看课程的任课教师</a>
+                    <a class="btn btn-info" th:href="@{/selectTeacherForSubjects(id=${session.userid})}">查看老师教授的课程</a>
+
+                    <div class="row clearfix" th:if="${#strings.equals(displaceteach,'subject')}">
+                        <div class="col-md-12 column">
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                <tr>
+                                    <th>课程编号</th>
+                                    <th>课程名称</th>
+                                    <th>查看任课教师</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="subject:${subjects}">
+                                    <td th:text="${subject.getSubjectid()}"></td>
+                                    <td th:text="${subject.getSubjectname()}"></td>
+                                    <td>
+                                        <a class="btn btn-success" th:href="@{/selectTeacherBySubjectId(subid=${subject.getSubjectid()},aid=${session.userid})}">查看任课教师</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="row clearfix" th:if="${#strings.equals(displaceteach,'teacher1')}">
+                        <div class="col-md-12 column">
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                <tr>
+                                    <th>教师工号</th>
+                                    <th>教师名称</th>
+                                    <th>联系方式</th>
+                                    <th>学科</th>
+                                    <th>部门</th>
+                                    <th>查看所教授的课程</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="teacher:${ts}">
+                                    <td th:text="${teacher.getTeacherid}"></td>
+                                    <td th:text="${teacher.getTeachername()}"></td>
+                                    <td th:text="${teacher.getTeacherphone()}"></td>
+                                    <td th:text="${teacher.getTeachermajor()}"></td>
+                                    <td th:text="${teacher.getTeacherdepart()}"></td>
+                                    <td>
+                                        <a class="btn btn-success" th:href="@{/selectSubjectByTeacherId(tid=${teacher.getTeacherid()},aid=${session.userid})}" >查看所教授的课程</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+                    <div class="row clearfix" th:if="${#strings.equals(displaceteach,'teacher')}">
+                        <div class="col-md-12 column">
+                            <p th:text="${subject.getSubjectname()}" ></p>
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                <tr>
+                                    <th>教师工号</th>
+                                    <th>教师姓名</th>
+                                    <th>学科</th>
+                                    <th>部门</th>
+                                    <th><a class="btn btn-success" th:href="@{/toAddSubjectTeacherPages(aid=${session.userid},subid=${subject.getSubjectid()})}">增加教师</a>/删除教师</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="teacher:${teachers}">
+                                    <td th:text="${teacher.getTeacherid()}"></td>
+                                    <td th:text="${teacher.getTeachername()}"></td>
+                                    <td th:text="${teacher.getTeachermajor()}"></td>
+                                    <td th:text="${teacher.getTeacherdepart()}"></td>
+                                    <td>
+                                        <a class="btn btn-success" th:href="@{/toAddSubjectTeacherPages(aid=${session.userid},subid=${subject.getSubjectid()})}">增加教师</a>
+                                        <a class="btn btn-danger" th:href="@{/deleteSubjectTeacher(tid=${teacher.getTeacherid()},subid=${subject.getSubjectid()},aid=${session.userid})}">删除教师</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="row clearfix" th:if="${#strings.equals(displaceteach,'subject1')}">
+                        <div class="col-md-12 column">
+                            <p>教师姓名：<h5 th:text="${teacher.getTeachername()}" ></h5></p>
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                <tr>
+                                    <th>课程编号</th>
+                                    <th>课程名称</th>
+                                    <th><a class="btn btn-success" th:href="@{/toAddTeacherSubjectPages(tid=${teacher.getTeacherid()},aid=${session.userid})}">增加课程</a>/删除课程</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="subject:${subjects}">
+                                    <td th:text="${subject.getSubjectid()}"></td>
+                                    <td th:text="${subject.getSubjectname()}"></td>
+                                    <td>
+                                        <a class="btn btn-success" th:href="@{/toAddTeacherSubjectPages(tid=${teacher.getTeacherid()},aid=${session.userid})}">增加课程</a>
+                                        <a class="btn btn-danger" th:href="@{/delectTeacherSubject(tid=${teacher.getTeacherid()},subid=${subject.getSubjectid()},aid=${session.userid})}">删除课程</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <p class="text-danger" th:if="${not #strings.isEmpty(subjectMsg)}" th:text="${subjectMsg}" id="pmsg"></p>
+
+                </div>
+            </div>
+
+        </main>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script type="text/javascript" src="asserts/js/jquery-3.2.1.slim.min.js" ></script>
+<script type="text/javascript" src="asserts/js/popper.min.js" ></script>
+<script type="text/javascript" src="asserts/js/bootstrap.min.js" ></script>
+
+<!-- Icons -->
+<script type="text/javascript" src="asserts/js/feather.min.js" ></script>
+<script>
+    feather.replace()
+</script>
+
+
+
+<!-- Graphs -->
+<script type="text/javascript" src="asserts/js/Chart.min.js" ></script>
+
+</body>
+
+</html>

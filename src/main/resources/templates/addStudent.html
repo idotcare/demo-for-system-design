@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>在线考试系统|添加学生界面</title>
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <!--<link th:href="@{/css/signin.css}" rel="stylesheet">-->
+</head>
+
+<body class="text-center">
+<h1 class="h3 mb-3 font-weight-normal">请输入想要添加的学生信息</h1>
+<form class="form-signin" th:action="@{/addStudent}">
+    <p>学生学号：<input type="text" name="id" th:placeholder="请输入学生学号" required="" autofocus=""></p>
+    <p>学生姓名：<input type="text" name="name" th:placeholder="请输入学生姓名" required="" autofocus=""></p>
+    <p>学生性别：<input type="text" name="sex" th:placeholder="学生性别" required="" autofocus=""></p>
+    <p>身份证号：<input type="text" name="idnum" th:placeholder="身份证号" required="" autofocus=""></p>
+    <p>学生年级：<input type="text" name="grade" th:placeholder="年级" required="" autofocus=""></p>
+    <input type="text" name="pwd" th:value="123456" required="" autofocus="" readonly hidden>
+    <input type="text" name="aid" th:value="${aid}" required="" autofocus="" readonly hidden>
+    <button class="btn-success" type="submit" >提交</button>
+    <button class="btn-danger" type="reset" >清空</button>
+    <p class="mt-5 mb-3 text-muted">© 2020-2021</p>
+</form>
+
+</body>
+
+</html>

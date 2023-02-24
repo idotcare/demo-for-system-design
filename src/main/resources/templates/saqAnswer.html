@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>在线考试系统|简答题题批阅界面</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+
+    <styly type="text/css">
+
+    </styly>
+</head>
+<body class="text-center">
+<div >
+
+    <form th:action="@{/insertWeight2Score}">
+        <p>题目</p>
+        <p>
+            <input type="text" th:text="${question}" hidden readonly>
+            <input type="text" name="question" th:value="${question}" hidden readonly>
+        </p>
+        <p>参考答案</p>
+        <p>
+            <input type="text" th:text="${answer}" hidden readonly>
+            <input type="text" name="answer" th:value="${answer}" hidden readonly>
+        </p>
+        <p>学生答案</p>
+        <p>
+            <input type="text" th:text="${sanswer.getAnswer()}" hidden readonly>
+            <!--<input type="text" name="sanswer" th:value="${sanswer.getAnswer()}" hidden readonly>-->
+        </p>
+        <p>试题解析</p>
+        <p>
+            <input type="text" th:text="${analysis}" hidden readonly>
+            <input type="text" name="analysis" th:value="${analysis}" hidden readonly>
+        </p>
+        <p>试题分值</p>
+        <p>
+            <input type="text" th:text="${sanswer.getWeight()}" hidden readonly>
+        </p>
+
+        <input type="text" name="tpaperid" th:value="${pid}" hidden readonly>
+        <input type="text" name="subjectid" th:value="${subid}" hidden readonly>
+        <input type="text" name="studentid" th:value="${sanswer.getStudentid()}" hidden readonly>
+        <input type="text" name="answerid" th:value="${sanswer.getAnswerid()}"  readonly hidden>
+        <input type="number" name="weight" th:placeholder="请打分..." autocomplete="off" required="" th:max="${sanswer.getWeight()}" th:min="0">
+        <button type="submit" >下一考生答案</button>
+    </form>
+</div>
+<p class="mt-5 mb-3 text-muted">© 2020-2021</p>
+</body>
+</html>

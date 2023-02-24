@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>在线考试系统|更新选择题界面</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+
+    <styly type="text/css">
+
+    </styly>
+</head>
+<body class="text-center">
+<h1>在线考试系统</h1>
+<h1 class="h3 mb-3 font-weight-normal">请输入新的判断题信息</h1>
+<div >
+    <form th:action="@{/updateJudge}">
+        <p>题目</p>
+        <p>
+            <textarea type="text" name="question" rows="2" cols="70" th:text="${judge.getJudgequestion()}" required="" autofocus=""></textarea>
+        </p>
+        <p>选项A</p>
+        <p>
+            <textarea type="text" name="optiona" rows="2" cols="70" th:text="${judge.getJudgeoptiona()}" required="" autofocus=""></textarea>
+        </p>
+        <p>选项B</p>
+        <p>
+            <textarea type="text" name="optionb" rows="2" cols="70" th:text="${judge.getJudegoptionb()}" required="" autofocus=""></textarea>
+        </p>
+        <p>答案：<!--回显出现问题-->
+            <input type="radio" th:value="A" th:checked="${judge.getJudgeanswer()=='A'}?'checked':''" name="answer">A&emsp;
+            <input type="radio" th:value="B" th:checked="${judge.getJudgeanswer()=='B'}?'checked':''" name="answer">B&emsp;
+        </p>
+        <p>解析</p>
+        <p>
+            <textarea type="text" name="analysis" rows="2" cols="70" th:text="${judge.getJudgeanalysis()}" required="" autofocus=""></textarea>
+        </p>
+        <input type="text" name="subid" th:value="${subid}" required="" autofocus="" readonly hidden="hidden">
+        <input type="text" name="judgeid" th:value="${judge.getJudgeid()}" required="" autofocus="" readonly hidden="hidden">
+        <button type="submit" >提交</button>
+        <button type="reset" >清空</button>
+    </form>
+</div>
+<p class="mt-5 mb-3 text-muted">© 2020-2021</p>
+</body>
+</html>

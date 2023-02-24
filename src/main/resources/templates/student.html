@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)http://getbootstrap.com/docs/4.0/examples/dashboard/ -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>在线考试系统|学生界面</title>
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link th:href="@{/css/dashboard.css}" rel="stylesheet">
+    <style type="text/css">
+        /* Chart.js */
+
+        @-webkit-keyframes chartjs-render-animation {
+            from {
+                opacity: 0.99
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        @keyframes chartjs-render-animation {
+            from {
+                opacity: 0.99
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        .chartjs-render-monitor {
+            -webkit-animation: chartjs-render-animation 0.001s;
+            animation: chartjs-render-animation 0.001s;
+        }
+    </style>
+</head>
+
+<body>
+<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="javascript:void(0);">欢迎[[${session.loginUser}]]同学</a>
+    <!--<input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">-->
+    <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+            <a class="nav-link" th:href="@{/}">退出登录</a>
+        </li>
+    </ul>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            <div class="sidebar-sticky">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/updateStinfo(id=${session.userid})}" >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                            修改个人信息
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/studentsViewGrades(sid=${session.userid})}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-layers">
+                                <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                                <polyline points="2 17 12 22 22 17"></polyline>
+                                <polyline points="2 12 12 17 22 12"></polyline>
+                            </svg>
+                            查看成绩
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/TakePartInTest(sid=${session.userid})}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file">
+                                <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                                <polyline points="13 2 13 9 20 9"></polyline>
+                            </svg>
+                            参加考试
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;">
+                <div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
+                    <div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div>
+                </div>
+                <div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
+                    <div style="position:absolute;width:200%;height:200%;left:0; top:0"></div>
+                </div>
+            </div>
+
+            <div class="row clearfix" th:if="${#strings.equals(displace,'updateInfo')}">
+                <div class="col-md-12 column">
+                    <form th:action="@{/updateSt}">
+                        <p>姓名:<b th:text="${stinfo.getStudentname()}"></b></p>
+                        <input th:value="${stinfo.getStudentid()}" readonly="readonly" type="hidden" name="id">
+                        <p>密码:<input type="text" th:value="${stinfo.getStudentpassword()}" name="pwd" autocomplete="off"></p>
+                        <button type="submit" >提交</button>
+                        <button type="reset" >清空</button>
+                    </form>
+                </div>
+            </div>
+
+
+            <div class="row clearfix" th:if="${#strings.equals(displace,'testpapers')}">
+                <div class="col-md-12 column">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                        <tr>
+                            <th>试卷编号</th>
+                            <th>试卷名称</th>
+                            <th>总分</th>
+                            <th>总时间</th>
+                            <th>开始时间</th>
+                            <th>截止时间</th>
+                            <th>
+                                参加考试
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="testpaper:${testpapers}">
+                            <td th:text="${testpaper.getTpaperid()}"></td>
+                            <td th:text="${testpaper.getTpapername()}"></td>
+                            <td th:text="${testpaper.getTotalscore()}"></td>
+                            <td th:text="${testpaper.getTotalminutes()}"></td>
+                            <td th:text="${testpaper.getStarttime()}"></td>
+                            <td th:text="${testpaper.getEndtime()}"></td>
+                            <td>
+                                <a th:href="@{/getPaperQuestionPage(tpaperid=${testpaper.getTpaperid()},sid=${session.userid})}">参加考试</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <b th:text="${testinfo}" th:if="${not #strings.isEmpty(testinfo)}"></b>
+                </div>
+            </div>
+
+            <div class="row clearfix" th:if="${#strings.equals(displace,'score')}">
+                <div class="col-md-12 column">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                        <tr>
+                            <th>试卷编号</th>
+                            <th>试卷名称</th>
+                            <th>
+                                查看成绩
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="testpaper:${testpapers}">
+                            <td th:text="${testpaper.getTpaperid()}"></td>
+                            <td th:text="${testpaper.getTpapername()}"></td>
+                            <td>
+                                <a th:href="@{/viewThisPaperScore(sid=${session.userid},pid=${testpaper.getTpaperid()})}">查看本试卷成绩</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <b th:text="${scoreinfo}" th:if="${not #strings.isEmpty(scoreinfo)}"></b>
+                </div>
+            </div>
+
+            <div class="row clearfix" th:if="${#strings.equals(displace,'pqs')}">
+                <div class="col-md-12 column">
+                    <p>学号:<b th:text="${studentinfo.getStudentid()}"></b></p>
+                    <p>姓名:<b th:text="${studentinfo.getStudentname()}"></b></p>
+                    <p>试卷名:<b th:text="${paperinfo.getTpapername()}"></b></p>
+                    <p>试卷分值:<b th:text="${paperinfo.getTotalscore()}"></b></p>
+                    <p>学生成绩:<b th:text="${studentscore.getScore()}"></b></p>
+                    <p>学生排名:<b th:text="${rank}"></b></p>
+                    <b>选择题详解</b>
+                    <table class="table table-hover table-striped">
+                        <thead>
+                        <tr>
+                            <th>题目</th>
+                            <th>选项A</th>
+                            <th>选项B</th>
+                            <th>选项C</th>
+                            <th>选项D</th>
+                            <th>参考答案</th>
+                            <th>解析</th>
+                            <th>分值</th>
+                            <th>学生作答</th>
+                            <th>实际得分</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="ch:${choices}">
+                            <td th:text="${ch.getChoice().getChoicequestion()}"></td>
+                            <td th:text="${ch.getChoice().getChoiceoptiona()}"></td>
+                            <td th:text="${ch.getChoice().getChoiceoptionb()}"></td>
+                            <td th:text="${ch.getChoice().getChoiceoptionc()}"></td>
+                            <td th:text="${ch.getChoice().getChoiceoptiond()}"></td>
+                            <td th:text="${ch.getChoice().getChoiceanswer()}"></td>
+                            <td th:text="${ch.getChoice().getChoiceanalysis()}"></td>
+                            <td th:text="${ch.getAnswer1().getWeight()}"></td>
+                            <td th:text="${ch.getAnswer1().getAnswer()}"></td>
+                            <td th:text="${ch.getAnswer1().getActualscore()}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <b>判断题详解</b>
+                    <table class="table table-hover table-striped">
+                        <thead>
+                        <tr>
+                            <th>题目</th>
+                            <th>选项A</th>
+                            <th>选项B</th>
+                            <th>参考答案</th>
+                            <th>解析</th>
+                            <th>分值</th>
+                            <th>学生作答</th>
+                            <th>实际得分</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="ju:${judges}">
+                            <td th:text="${ju.getJudge().getJudgequestion()}"></td>
+                            <td th:text="${ju.getJudge().getJudgeoptiona()}"></td>
+                            <td th:text="${ju.getJudge().getJudegoptionb()}"></td>
+                            <td th:text="${ju.getJudge().getJudgeanswer()}"></td>
+                            <td th:text="${ju.getJudge().getJudgeanalysis()}"></td>
+                            <td th:text="${ju.getAnswer2().getWeight()}"></td>
+                            <td th:text="${ju.getAnswer2().getAnswer()}"></td>
+                            <td th:text="${ju.getAnswer2().getActualscore()}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <b>填空题详解</b>
+                    <table class="table table-hover table-striped">
+                        <thead>
+                        <tr>
+                            <th>题目</th>
+                            <th>参考答案</th>
+                            <th>解析</th>
+                            <th>分值</th>
+                            <th>学生作答</th>
+                            <th>实际得分</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="co:${completions}">
+                            <td th:text="${co.getCompletion().getCompletquestion()}"></td>
+                            <td th:text="${co.getCompletion().getCompletanswer()}"></td>
+                            <td th:text="${co.getCompletion().getCompletanalysis()}"></td>
+                            <td th:text="${co.getAnswer3().getWeight()}"></td>
+                            <td th:text="${co.getAnswer3().getAnswer()}"></td>
+                            <td th:text="${co.getAnswer3().getActualscore()}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <b>简答题详解</b>
+                    <table class="table table-hover table-striped">
+                        <thead>
+                        <tr>
+                            <th>题目</th>
+                            <th>参考答案</th>
+                            <th>解析</th>
+                            <th>分值</th>
+                            <th>学生作答</th>
+                            <th>实际得分</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="saq:${saqs}">
+                            <td th:text="${saq.getSaq().getSaquestion()}"></td>
+                            <td th:text="${saq.getSaq().getSaqanswer()}"></td>
+                            <td th:text="${saq.getSaq().getSaqanalysis()}"></td>
+                            <td th:text="${saq.getAnswer4().getWeight()}"></td>
+                            <td th:text="${saq.getAnswer4().getAnswer()}"></td>
+                            <td th:text="${saq.getAnswer4().getActualscore()}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <b th:text="${scoreinfo}" th:if="${not #strings.isEmpty(scoreinfo)}"></b>
+                </div>
+            </div>
+
+
+        </main>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script type="text/javascript" src="asserts/js/jquery-3.2.1.slim.min.js" ></script>
+<script type="text/javascript" src="asserts/js/popper.min.js" ></script>
+<script type="text/javascript" src="asserts/js/bootstrap.min.js" ></script>
+
+<!-- Icons -->
+<script type="text/javascript" src="asserts/js/feather.min.js" ></script>
+<script>
+    feather.replace()
+</script>
+
+
+
+<!-- Graphs -->
+<script type="text/javascript" src="asserts/js/Chart.min.js" ></script>
+
+</body>
+
+</html>

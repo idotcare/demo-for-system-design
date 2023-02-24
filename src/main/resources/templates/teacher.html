@@ -1,0 +1,290 @@
+<!--
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>在线考试系统|管理员界面</title>
+</head>
+<body>
+<h1>管理员</h1>
+
+
+</body>
+</html>-->
+<!DOCTYPE html>
+<!-- saved from url=(0052)http://getbootstrap.com/docs/4.0/examples/dashboard/ -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>在线考试系统|教师界面</title>
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link th:href="@{/css/dashboard.css}" rel="stylesheet">
+    <style type="text/css">
+        /* Chart.js */
+
+        @-webkit-keyframes chartjs-render-animation {
+            from {
+                opacity: 0.99
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        @keyframes chartjs-render-animation {
+            from {
+                opacity: 0.99
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        .chartjs-render-monitor {
+            -webkit-animation: chartjs-render-animation 0.001s;
+            animation: chartjs-render-animation 0.001s;
+        }
+    </style>
+
+    <style type="text/css">
+        #pmsg{
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="javascript:void(0);">欢迎[[${session.loginUser}]]老师</a>
+    <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+            <a class="nav-link" th:href="@{/}">退出登录</a>
+        </li>
+    </ul>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            <div class="sidebar-sticky">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/updateTeinfo(id=${session.userid})}" >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                            修改个人信息
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/addQuestions(tid=${session.userid})}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-layers">
+                                <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                                <polyline points="2 17 12 22 22 17"></polyline>
+                                <polyline points="2 12 12 17 22 12"></polyline>
+                            </svg>
+                            管理试题信息
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/addPaper(tid=${session.userid})}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file">
+                                <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                                <polyline points="13 2 13 9 20 9"></polyline>
+                            </svg>
+                            管理试卷信息
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/markingPapers(tid=${session.userid})}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file">
+                                <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                                <polyline points="13 2 13 9 20 9"></polyline>
+                            </svg>
+                            批阅试卷
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/selectStudentScore(tid=${session.userid})}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                            查看学生成绩
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;">
+                <div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
+                    <div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div>
+                </div>
+                <div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
+                    <div style="position:absolute;width:200%;height:200%;left:0; top:0"></div>
+                </div>
+            </div>
+
+            <div class="row clearfix" th:if="${#strings.equals(displace,'updateInfo')}">
+                <div class="col-md-12 column">
+                    <form th:action="@{/updateTe}">
+                        <p>姓名:<b th:text="${teinfo.getTeachername()}"></b></p>
+                        <input th:value="${teinfo.getTeacherid()}" readonly="readonly" type="hidden" name="id">
+                        <p>密码:<input type="text" th:value="${teinfo.getTeacherpassword()}" name="pwd" autocomplete="off"></p>
+                        <p>手机:<input type="text" th:value="${teinfo.getTeacherphone()}" name="phone" autocomplete="off"></p>
+                        <button class="btn-success" type="submit" >提交</button>
+                        <button class="btn-danger" type="reset" >清空</button>
+                    </form>
+                </div>
+            </div>
+
+
+            <div class="row clearfix" th:if="${#strings.equals(displace,'subject')}">
+                <div class="col-md-12 column">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                        <tr>
+                            <th>课程编号</th>
+                            <th>课程名称</th>
+                            <th>管理课程试题</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="subject:${subjects}">
+                            <td th:text="${subject.getSubjectid()}"></td>
+                            <td th:text="${subject.getSubjectname()}"></td>
+                            <td>
+                                <a th:href="@{/selectSubjectChoicePages(subid=${subject.getSubjectid()})}" target="_blank">选择题</a>
+                                <a th:href="@{/selectSubjectJudgePages(subid=${subject.getSubjectid()})}" target="_blank">判断题</a>
+                                <a th:href="@{/selectSubjectCompletionPages(subid=${subject.getSubjectid()})}" target="_blank">填空题</a>
+                                <a th:href="@{/selectSubjectShortAnswerQuestionPages(subid=${subject.getSubjectid()})}" target="_blank">简答题</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+            <div class="row clearfix" th:if="${#strings.equals(displace,'subject1')}">
+                <div class="col-md-12 column">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                        <tr>
+                            <th>课程编号</th>
+                            <th>课程名称</th>
+                            <th>管理课程试卷</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="subject:${subjects}">
+                            <td th:text="${subject.getSubjectid()}"></td>
+                            <td th:text="${subject.getSubjectname()}"></td>
+                            <td>
+                                <a th:href="@{/selectSubjectPaper(subid=${subject.getSubjectid()},tid=${session.userid})}" target="_blank">试卷管理</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+            <div class="row clearfix" th:if="${#strings.equals(displace,'subject2')}">
+                <div class="col-md-12 column">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                        <tr>
+                            <th>课程编号</th>
+                            <th>课程名称</th>
+                            <th>管理课程试卷</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="subject:${subjects}">
+                            <td th:text="${subject.getSubjectid()}"></td>
+                            <td th:text="${subject.getSubjectname()}"></td>
+                            <td>
+                                <a th:href="@{/selectSubjectPaperToMark(subid=${subject.getSubjectid()},tid=${session.userid})}" target="_blank">查看试卷</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+            <div class="row clearfix" th:if="${#strings.equals(displace,'subject3')}">
+                <div class="col-md-12 column">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                        <tr>
+                            <th>课程编号</th>
+                            <th>课程名称</th>
+                            <th>查看此课程试卷</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="subject:${subjects}">
+                            <td th:text="${subject.getSubjectid()}"></td>
+                            <td th:text="${subject.getSubjectname()}"></td>
+                            <td>
+                                <a th:href="@{/selectSubjectPaperToSeeScore(subid=${subject.getSubjectid()},tid=${session.userid})}" target="_blank">查看本人创建的试卷</a>
+                                <a th:href="@{/selectSubjectPaperToSeeScore2(subid=${subject.getSubjectid()},tid=${session.userid})}" target="_blank">查看课程下所有试卷</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+
+
+            <p th:if="${not #strings.isEmpty(submsg)}" th:text="${submsg}" id="pmsg"></p>
+
+
+
+
+
+
+
+        </main>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script type="text/javascript" src="asserts/js/jquery-3.2.1.slim.min.js" ></script>
+<script type="text/javascript" src="asserts/js/popper.min.js" ></script>
+<script type="text/javascript" src="asserts/js/bootstrap.min.js" ></script>
+
+<!-- Icons -->
+<script type="text/javascript" src="asserts/js/feather.min.js" ></script>
+<script>
+    feather.replace()
+</script>
+
+
+
+<!-- Graphs -->
+<script type="text/javascript" src="asserts/js/Chart.min.js" ></script>
+
+</body>
+
+</html>

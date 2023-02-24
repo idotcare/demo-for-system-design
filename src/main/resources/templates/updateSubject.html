@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>在线考试系统|添加课程界面</title>
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <!--<link th:href="@{/css/signin.css}" rel="stylesheet">-->
+</head>
+
+<body class="text-center">
+<h1 class="h3 mb-3 font-weight-normal">请输入想要添加的课程信息</h1>
+<form class="form-signin" th:action="@{/updateSubject}">
+    <p>课程编号：<input type="text" name="id" th:value="${subject.getSubjectid()}" th:placeholder="请输入课程编号" required="" autofocus=""></p>
+    <p>课程名称：<input type="text" name="name" th:value="${subject.getSubjectname()}" th:placeholder="请输入课程名" required="" autofocus=""></p>
+    <input type="text" name="aid" th:value="${subject.getAdminid()}" required="" autofocus="" readonly hidden>
+    <button class="btn-success" type="submit" >提交</button>
+    <button class="btn-danger" type="reset" >清空</button>
+    <p class="mt-5 mb-3 text-muted">© 2020-2021</p>
+</form>
+
+</body>
+
+</html>

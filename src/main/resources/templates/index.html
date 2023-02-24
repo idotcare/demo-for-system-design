@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>在线考试系统|登录界面</title>
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <!--<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">-->
+    <!-- Custom styles for this template -->
+    <!--<link th:href="@{/css/signin.css}" rel="stylesheet">-->
+
+    <style type="text/css">
+
+        .loginclass{
+            position: fixed;
+            background: url("/loginback.png") no-repeat 50%;
+            height: 461px;
+            width: 1318px;
+            top: 50%;
+            left: 50%;
+            margin-top: -230.5px;
+            margin-left: -659px;
+        }
+        .loginclass1{
+            position: relative;
+            margin: 0 auto;
+            width: 410px;
+            padding: 50px;
+            box-shadow: 0 0 20px #ecf4f8;
+            background-color: #fff;
+        }
+    </style>
+
+</head>
+
+<body>
+<div class="loginclass">
+    <div class="loginclass1">
+        <div class="text-center">
+            <h1><strong><i>在线考试系统</i></strong></h1>
+            <h1><small><strong><i>登录界面</i></strong></small></h1>
+            <h4><i>请登录</i></h4>
+            <p th:if="${not #strings.isEmpty(logintMsg)}" class="text-danger" th:text="${logintMsg}"></p>
+            <form class="form-signin" th:action="@{/user/login}">
+                <input type="text" name="username" class="form-control" th:placeholder="用户账号" required="" autofocus="" autocomplete="off">
+                <input type="password" name="password" class="form-control" th:placeholder="登录密码" required="">
+                <p>身份：
+                    <input type="radio" th:value="student" name="ident" checked>学生
+                    <input type="radio" th:value="teacher" name="ident">教师
+                    <input type="radio" th:value="admin" name="ident">管理员
+                </p>
+                <button class="btn btn-warning" type="reset" >重置</button>
+                <button class="btn btn-info" type="submit" >登录</button>
+                <p class="mt-5 mb-3 text-muted">© 2020-2021</p>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
+<!--<img class="mb-4" th:src="@{/img/bootstrap-solid.svg}" alt="" width="72" height="72">-->

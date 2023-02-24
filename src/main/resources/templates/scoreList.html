@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)http://getbootstrap.com/docs/4.0/examples/dashboard/ -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>在线考试系统|试卷成绩查看界面</title>
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link th:href="@{/css/dashboard.css}" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" media="screen" th:href="@{../chartjs/style/main.css}"/>
+
+    <script src="../chartjs/Chart.bundle.js"></script>
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+
+    <style type="text/css">
+        /* Chart.js */
+
+        @-webkit-keyframes chartjs-render-animation {
+            from {
+                opacity: 0.99
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        @keyframes chartjs-render-animation {
+            from {
+                opacity: 0.99
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        .chartjs-render-monitor {
+            -webkit-animation: chartjs-render-animation 0.001s;
+            animation: chartjs-render-animation 0.001s;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="text-center">
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <div class="page-header">
+                    <h1>
+                        <small>《[[${pname}]]》试卷成绩查看界面</small>
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <div class="row">
+        <div class="col-md-6">
+            <!--一些试题的统计信息-->
+            <!--选择题-->
+            <div class="row clearfix" th:if="${#strings.equals(choiceinfo,'have')}">
+                <div class="col-md-12 column">
+                    <b th:text="选择题信息统计分析"></b>
+                    <table class="table table-hover table-striped">
+                        <thead>
+                        <tr>
+                            <th>题目</th>
+                            <th>选项A</th>
+                            <th>选项B</th>
+                            <th>选项C</th>
+                            <th>选项D</th>
+                            <th>答案</th>
+                            <th>正确率</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="cho:${choices}">
+                            <td th:text="${cho.getChoice().getChoicequestion()}"></td>
+                            <td th:text="${cho.getChoice().getChoiceoptiona()}"></td>
+                            <td th:text="${cho.getChoice().getChoiceoptionb()}"></td>
+                            <td th:text="${cho.getChoice().getChoiceoptionc()}"></td>
+                            <td th:text="${cho.getChoice().getChoiceoptiond()}"></td>
+                            <td th:text="${cho.getChoice().getChoiceanswer()}"></td>
+                            <td th:text="${cho.getAccuracy()}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!--判断题-->
+            <div class="row clearfix" th:if="${#strings.equals(judgeinfo,'have')}">
+                <div class="col-md-12 column">
+                    <b th:text="判断题信息统计分析"></b>
+                    <table class="table table-hover table-striped">
+                        <thead>
+                        <tr>
+                            <th>题目</th>
+                            <th>选项A</th>
+                            <th>选项B</th>
+                            <th>答案</th>
+                            <th>正确率</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="ju:${judges}">
+                            <td th:text="${ju.getJudge().getJudgequestion()}"></td>
+                            <td th:text="${ju.getJudge().getJudgeoptiona()}"></td>
+                            <td th:text="${ju.getJudge().getJudegoptionb()}"></td>
+                            <td th:text="${ju.getJudge().getJudgeanswer()}"></td>
+                            <td th:text="${ju.getAccuracy()}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!--填空题-->
+            <div class="row clearfix" th:if="${#strings.equals(compleinfo,'have')}">
+                <div class="col-md-12 column">
+                    <b th:text="填空题信息统计分析"></b>
+                    <table class="table table-hover table-striped">
+                        <thead>
+                        <tr>
+                            <th>题目</th>
+                            <th>答案</th>
+                            <th>正确率</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="co:${completions}">
+                            <td th:text="${co.getCompletion().getCompletquestion()}"></td>
+                            <td th:text="${co.getCompletion().getCompletanswer()}"></td>
+                            <td th:text="${co.getAccuracy()}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!--简答题-->
+            <div class="row clearfix" th:if="${#strings.equals(saqinfo,'have')}">
+                <div class="col-md-12 column">
+                    <b th:text="简答题信息统计分析"></b>
+                    <table class="table table-hover table-striped">
+                        <thead>
+                        <tr>
+                            <th>题目</th>
+                            <th>答案</th>
+                            <th>得分率</th>
+                            <th>满分率</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="saq:${saqs}">
+                            <td th:text="${saq.getSaq().getSaquestion()}"></td>
+                            <td th:text="${saq.getSaq().getSaqanswer()}"></td>
+                            <td th:text="${saq.getScoringRate()}"></td>
+                            <td th:text="${saq.getAccuracy()}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+
+            <input type="hidden" id="dataList" th:value="${dataList}">
+            <p th:if="${not #strings.isEmpty(scoreMsg)}" th:text="${scoreMsg}"></p>
+            <canvas id="myChart">
+                图表区
+            </canvas>
+
+            <div class="row clearfix">
+                <div class="col-md-12 column">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                        <tr>
+                            <th>名次</th>
+                            <th>姓名</th>
+                            <th>分数</th>
+                            <th>
+                                <a th:href="@{/selectThisPaperScores(pid=${pid},pname=${pname})}">成绩从高到低</a>
+                                <a th:href="@{/selectThisPaperScoresAsc(pid=${pid},pname=${pname})}">成绩从低到高</a>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="score:${scores}">
+                            <td th:text="${score.getRanking()}"></td>
+                            <td th:text="${score.getStudent().getStudentname()}"></td>
+                            <td th:text="${score.getScore().getScore()}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+
+
+        <script>
+
+            let dataList = $("#dataList").val();
+            var val = eval("("+dataList+")");
+            //console.log(val);
+            (function () {
+                'use strict';
+
+                var type = 'bar';
+                var data = {
+                    labels: ["60%以下","60%-70%","70%-80%","80%-90%","90%及以上"],
+                    datasets: [
+                        {
+                            label: val.name,
+                            data: [val.worst, val.sixty, val.senty, val.eity, val.best]
+                        },
+                    ]
+                };
+
+                var options = {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                min: 0,
+                                max: 10,
+                                suggestedMin: 0,
+                                suggestedMax: 10,
+                                stepSize: 2,
+                                callback: function (value, index, values) {
+                                    return value + '人';
+                                },
+                            }
+                        }]
+                    },
+                    title: {
+                        display: true,
+                        text: '成绩分析表',
+                        fontColor: 'gray',
+                        fontSize: '24'
+                    }
+                };
+
+                var ctx = document.getElementById('myChart').getContext('2d');
+                var chart = new Chart(ctx, {
+                    type: type,
+                    data: data,
+                    options: options
+                });
+            })();
+        </script>
+
+    </div>
+
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script type="text/javascript" src="asserts/js/jquery-3.2.1.slim.min.js" ></script>
+<script type="text/javascript" src="asserts/js/popper.min.js" ></script>
+<script type="text/javascript" src="asserts/js/bootstrap.min.js" ></script>
+
+<!-- Icons -->
+<script type="text/javascript" src="asserts/js/feather.min.js" ></script>
+<script>
+    feather.replace()
+</script>
+
+<!-- Graphs -->
+<script type="text/javascript" src="asserts/js/Chart.min.js" ></script>
+
+</body>
+
+</html>
